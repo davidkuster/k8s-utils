@@ -1,0 +1,10 @@
+#!/bin/bash
+
+usage="k8s-pods <env> <pod_names_to_grep>"
+
+pod_names=$2
+
+# reads "env" param, loads "namespace" param
+. ./load-config.sh
+
+watch "kubectl --namespace=$namespace get pods | grep $pod_names"
