@@ -62,6 +62,8 @@ As such, it's important to be specific enough to not pick up pods you weren't ex
 
 Typically `pod_names_to_grep` will be the name of the service you're interested in.
 
+---
+
 ### k8s-pods
 
 Usage: `k8s-pods <env> <pod_names_to_grep>`
@@ -73,13 +75,13 @@ Usage: `k8s-pods <env> <pod_names_to_grep>`
 - Example: `k8s-pods stage search-api`
 
 - Example result:
-
+    ```
     Every 2.0s: kubectl --namespace=stage get pods | grep search-api
 
     search-api-1568909879-476vm    1/1       Running   0          1d
     search-api-1568909879-f2pdb    1/1       Running   0          1d
     search-api-1568909879-gzd9n    1/1       Running   0          1d
-
+    ```
 
 - It can also be useful to quickly check the status of multiple pods across services, by using a less specific `pod_names_to_grep` value.
 
@@ -110,19 +112,21 @@ Usage: `k8s-pod-errors <env> <pod_names_to_grep>`
 - Example: `k8s-pod-errors production recommender-api`
 
 - Example result:
-
+    ```
     pod = recommender-api-1966416721-dl4k3, error count =        178
     pod = recommender-api-1966416721-kdc3g, error count =        212
     pod = recommender-api-1966416721-wsjn4, error count =        153
+    ```
 
 - Example result of an outlier pod:
-
+    ```
     pod = recommender-api-1966416721-0dyv3, error count =        8
     pod = recommender-api-1966416721-7li0w, error count =     9843
     pod = recommender-api-1966416721-mmgna, error count =        9
     pod = recommender-api-1966416721-q6us9, error count =        9
     pod = recommender-api-1966416721-vqz9h, error count =       11
     pod = recommender-api-1966416721-yyd5s, error count =        4
+    ```
 
 ---
 
@@ -133,9 +137,10 @@ Usage: `k8s-pod-grep <env> <pod_names_to_grep> <grep_string>`
 - This script is similar to `k8s-pod-errors` but instead of doing a hard coded `grep -i error` this script allows the user to input the string param to grep. (But, still hard coded to only look over the last 5 minutes due to the prod debugging focus.) This can be useful to drill into specific errors or other behaviors when there's a concern it may not be consistently happening across all pods for the given service.
 
 - Example: `k8s-pod-grep production customer-api "Read timed out"`
-
+    ```
     pod = customer-api-1966416721-dl4k3, grep count =        0
     pod = customer-api-1966416721-kdc3g, grep count =        4
     pod = customer-api-1966416721-wsjn4, grep count =        5
+    ```
 
 ---
