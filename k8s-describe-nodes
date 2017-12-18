@@ -1,0 +1,14 @@
+#!/bin/bash
+
+usage="k8s-describe-nodes <env>"
+notes="calls 'kubectl describe node' on all nodes in the cluster for the given env, and truncates the output to hopefully the most interesting bits"
+
+# reads "env" param, loads "namespace" param
+. ./load-config.sh
+
+for node in $(kubectl get nodes | grep 'node\|master' | cut -f 1 -d ' '); do
+    echo "node = $node"
+    echo "------------------------------------------------"
+    kubectl describe node $node | egrep "Allocated resources|Conditions" -A 6
+    echo ""
+done
