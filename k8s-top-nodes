@@ -1,6 +1,6 @@
 #!/bin/bash
 
-usage="k8s-nodes-status <env>"
+usage="k8s-top-nodes <env>"
 notes="calls 'kubectl top node' on all nodes in the cluster for the given env"
 
 # reads "env" param, loads "namespace" param
