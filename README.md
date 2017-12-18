@@ -194,7 +194,7 @@ Usage: `k8s-describe-nodes <env>`
 - Example: `k8s-describe-nodes production`
 
 - Example result:
-
+    ```
     node = ip-172-11-11-1.us-west-2.compute.internal
     ------------------------------------------------
     Conditions:
@@ -211,5 +211,6 @@ Usage: `k8s-describe-nodes <env>`
       ------------  ----------   ---------------  -------------
       8510m (53%)   7566m (47%)  20477Mi (31%)    19325Mi (30%)
     Events:         <none>
+    ```
 
 ---
