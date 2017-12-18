@@ -144,3 +144,72 @@ Usage: `k8s-pod-grep <env> <pod_names_to_grep> <grep_string>`
     ```
 
 ---
+
+### k8s-top-pods
+
+Usage: `k8s-top-pods <env> <pod_names_to_grep>`
+
+- Use this to look at CPU and memory consumption at the pod/container level. It calls `kubectl top pod <pod_name> --containers` on each pod found.
+
+- Example: `k8s-top-pods production order-api`
+    ```
+    POD                          NAME        CPU(cores)    MEMORY(bytes)
+    order-api-2838787885-dnp5q   order-api   2m            1496Mi
+    POD                          NAME        CPU(cores)    MEMORY(bytes)
+    order-api-2838787885-22n13   order-api   8m            1507Mi
+    POD                          NAME        CPU(cores)    MEMORY(bytes)
+    order-api-2838787885-7dcq8   order-api   5m            1554Mi
+    ```
+
+- Note: requires your cluster is running [Heapster](https://github.com/kubernetes/heapster).
+
+---
+
+### k8s-top-nodes
+
+Usage: `k8s-top-nodes <env>`
+
+- Use this to look at CPU and memory consumption at the node level. It calls `kubectl top node` on each node in the cluster related to the given environment.
+
+- Example: `k8s-top-nodes production`
+    ```
+    NAME                                           CPU(cores)   CPU%      MEMORY(bytes)   MEMORY%
+    ip-172-00-000-000.us-west-2.compute.internal   417m         2%        23407Mi         36%
+    NAME                                           CPU(cores)   CPU%      MEMORY(bytes)   MEMORY%
+    ip-172-11-111-111.us-west-2.compute.internal   781m         4%        25774Mi         40%
+    NAME                                           CPU(cores)   CPU%      MEMORY(bytes)   MEMORY%
+    ip-172-22-222-222.us-west-2.compute.internal   533m         3%        34249Mi         53%
+    ```
+
+- Note: requires your cluster is running [Heapster](https://github.com/kubernetes/heapster).
+
+---
+
+### k8s-describe-nodes
+
+Usage: `k8s-describe-nodes <env>`
+
+- Use this to pull information on the nodes in a given environment. Note that this is not too different from simply running `kubectl describe node` on all nodes in the cluster, but it attempts to clean up and minimize the output in order to focus on finding nodes that are out of disk space and/or have over-provisioned CPU and/or RAM.
+
+- Example: `k8s-describe-nodes production`
+
+- Example result:
+
+    node = ip-172-11-11-1.us-west-2.compute.internal
+    ------------------------------------------------
+    Conditions:
+      Type             Status  LastHeartbeatTime                 LastTransitionTime                Reason                       Message
+      ----             ------  -----------------                 ------------------                ------                       -------
+      OutOfDisk        False   Wed, 11 Oct 2017 13:56:56 -0700   Mon, 02 Oct 2017 17:55:09 -0700   KubeletHasSufficientDisk     kubelet has sufficient disk space available
+      MemoryPressure   False   Wed, 11 Oct 2017 13:56:56 -0700   Mon, 02 Oct 2017 17:55:09 -0700   KubeletHasSufficientMemory   kubelet has sufficient memory available
+      DiskPressure     False   Wed, 11 Oct 2017 13:56:56 -0700   Mon, 02 Oct 2017 17:55:09 -0700   KubeletHasNoDiskPressure     kubelet has no disk pressure
+      Ready            True    Wed, 11 Oct 2017 13:56:56 -0700   Mon, 02 Oct 2017 17:55:20 -0700   KubeletReady                 kubelet is posting ready status
+    --
+    Allocated resources:
+      (Total limits may be over 100 percent, i.e., overcommitted.)
+      CPU Requests  CPU Limits   Memory Requests  Memory Limits
+      ------------  ----------   ---------------  -------------
+      8510m (53%)   7566m (47%)  20477Mi (31%)    19325Mi (30%)
+    Events:         <none>
+
+---
