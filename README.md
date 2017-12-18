@@ -101,6 +101,8 @@ Usage: `k8s-tail <env> <pod_names_to_grep> <optional extra params>`
 
 - It is also possible to pass a pod name for the grep value, which will be equivalent to doing `kubectl logs -f <pod_name>`.
 
+- For a more full-featured tail script, see [johanhaleby/kubetail](https://github.com/johanhaleby/kubetail).
+
 ---
 
 ### k8s-pod-errors
