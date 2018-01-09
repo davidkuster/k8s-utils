@@ -6,4 +6,4 @@ notes="shortcut for using 'kubectl' directly"
 # reads "env" param, loads "namespace" param
 . "$(dirname "${BASH_SOURCE[0]}")/load-config.sh"
 
-kubectl $2
+kubectl --namespace=$namespace "${@:2}"
