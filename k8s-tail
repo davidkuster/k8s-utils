@@ -7,6 +7,6 @@ pod_names=$2
 since=$3
 
 # reads "env" param, loads "namespace" param
-. ./load-config.sh
+. "$(dirname "${BASH_SOURCE[0]}")/load-config.sh"
 
 kubectl --namespace=$namespace get pods | grep $pod_names | cut -f 1 -d ' ' | xargs -P 20 -I {} kubectl --namespace=$namespace logs -f {} $since

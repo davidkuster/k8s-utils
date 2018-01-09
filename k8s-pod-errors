@@ -6,7 +6,7 @@ notes="greps for case-insentitive 'error' string over the last 5 minutes"
 pod_names=$2
 
 # reads "env" param, loads "namespace" param
-. ./load-config.sh
+. "$(dirname "${BASH_SOURCE[0]}")/load-config.sh"
 
 for pod in $(kubectl --namespace=$namespace get pods | grep $pod_names | cut -f 1 -d ' '); do
     error_count=$(kubectl --namespace=$namespace logs $pod --since=5m | grep -i error | wc -l)
