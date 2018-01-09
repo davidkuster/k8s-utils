@@ -2,8 +2,6 @@
 
 This repo is a collection of small bash scripts oriented primarily to assist with Kubernetes production support, although they can certainly be used in non-prod environments as well.
 
-These follow the naming convention suggested by the env-specific `k8s-*` aliases for `kubectl` as detailed in the [k8s-tips](https://github.com/davidkuster/k8s-tips) repo.
-
 ## Setup
 
 ### Add to PATH
@@ -64,6 +62,16 @@ Typically `pod_names_to_grep` will be the name of the service you're interested 
 
 ---
 
+### k8s
+
+Usage: `k8s <env> <cmd>`
+
+- Env-specific shortcut for `kubectl` directly.
+
+- Example: `k8s dev get pods`
+
+---
+
 ### k8s-pods
 
 Usage: `k8s-pods <env> <pod_names_to_grep>`
@@ -97,7 +105,7 @@ Usage: `k8s-tail <env> <pod_names_to_grep> <optional extra params>`
 
 - Example: `k8s-tail qa catalog-api`
 
-- Example: `k8s-tail prod recommender-api --since=5m`
+- Example: `k8s-tail production recommender-api --since=5m`
 
 - It is also possible to pass a pod name for the grep value, which will be equivalent to doing `kubectl logs -f <pod_name>`.
 
