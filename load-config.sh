@@ -75,7 +75,15 @@ fi
 
 
 if [ -z $cfg ] || [ -z $namespace ]; then
-    fail "No configuration found for env: $env"
+    echo "No configuration found for env: $env"
+    echo "Configured env values are:"
+    if [ -f "$config_script" ]; then
+        grep '==' $config_script | cut -f 3 -d '=' | cut -f 1 -d ']' | sort
+    else
+        # kinda hacky to grep this file, have to explicitly eliminate reporting on this line with the final "grep -v"
+        grep 'if\|elif' "$(dirname "${BASH_SOURCE[0]}")/load-config.sh" | grep '==' | cut -f 3 -d '=' | cut -f 1 -d ']' | sort | grep -v '| cut'
+    fi
+    fail
 fi
 
 
