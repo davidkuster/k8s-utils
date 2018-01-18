@@ -1,15 +1,16 @@
 #!/bin/bash
 
 usage="k8s-pod-grep <env> <pod_names_to_grep> <grep_string>"
-notes="reports count of case-insensitive grep string per pod, over the last 5 minutes"
+notes="reports count of case-insensitive grep string per pod, over the last 5 minutes. Can optionally add additional param like '10m' or '24h' to change the --since= value."
 
 pod_names=$2
 grep_string=$3
+since="${4:-5m}"
 
 # reads "env" param, loads "namespace" param
 . "$(dirname "${BASH_SOURCE[0]}")/load-config.sh"
 
 for pod in $(kubectl --namespace=$namespace get pods | grep "$pod_names" | cut -f 1 -d ' '); do
-    grep_count=$(kubectl --namespace=$namespace logs $pod --since=5m | grep -i "$grep_string" | wc -l)
+    grep_count=$(kubectl --namespace=$namespace logs $pod --since=$since | grep -ai "$grep_string" | wc -l)
     echo "pod = $pod, grep count = $grep_count"
 done
