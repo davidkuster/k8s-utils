@@ -8,4 +8,4 @@ pod_names=$2
 # reads "env" param, loads "namespace" param
 . "$(dirname "${BASH_SOURCE[0]}")/load-config.sh"
 
-kubectl --namespace=$namespace get pods | grep $pod_names | grep Running | cut -f 1 -d ' ' | xargs -P 20 -I {} kubectl --namespace=$namespace top pod {} --containers
+kubectl --namespace=$namespace get pods | grep $pod_names | grep Running | cut -f 1 -d ' ' | xargs -P 20 -I {} kubectl --namespace=$namespace top pod {} --containers && echo
