@@ -22,13 +22,19 @@ A sample script is provided which can be copied to your `~/.kube` dir:
 
 It will then need to be modified to reflect your config file and namespace setup.
 
-## Note on grepping pod names
+## General notes
+
+### Grepping pod names
 
 A number of these scripts use a parameter named `pod_names_to_grep`. The convention here is that this will be passed to `kubectl get pods | grep $pod_names_to_grep`.
 
 As such, it's important to be specific enough to not pick up pods you weren't expecting. Alternatively, you can also provide an actual pod name to narrow the scope down to a single pod.
 
 Typically `pod_names_to_grep` will be the name of the service you're interested in.
+
+### Each command is env-specific
+
+Beyond the general convenience aspect, a large intent of these scripts is to not have to set the kubectl context between commands. By just changing the `<env>` param the same command can quickly be run against different envs. Additionally, I find it worthile to explicitly state what env each command is being executed against.
 
 ## Scripts
 
