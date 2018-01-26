@@ -38,7 +38,7 @@ Typically `pod_names_to_grep` will be the name of the service you're interested 
 
 Usage: `k8s <env> <cmd>`
 
-- Env-specific shortcut for `kubectl` directly.
+- Env-specific shortcut for using `kubectl` directly.
 
 - Example: `k8s dev get pods`
 
@@ -79,7 +79,7 @@ Usage: `k8s-tail <env> <pod_names_to_grep> <optional extra params>`
 
 - Example: `k8s-tail production recommender-api --since=5m`
 
-- It is also possible to pass a pod name for the grep value, which will be equivalent to doing `kubectl logs -f <pod_name>`.
+- It is also possible to pass a specific pod name for the grep value, which will be equivalent to doing `kubectl logs -f <pod_name>`.
 
 - For a more full-featured tail script, see [johanhaleby/kubetail](https://github.com/johanhaleby/kubetail).
 
@@ -87,9 +87,9 @@ Usage: `k8s-tail <env> <pod_names_to_grep> <optional extra params>`
 
 ### k8s-pod-errors
 
-Usage: `k8s-pod-errors <env> <pod_names_to_grep>`
+Usage: `k8s-pod-errors <env> <pod_names_to_grep> <optional --since= value>`
 
-- This script will grep for case-insentitive "error" lines in the logs of the pods in the given service, but currently over only the last 5 minutes. If a service is alerting, this is useful to help determine if one pod is acting as an outlier or if all pods are reporting similar error levels and any problem is service-wide.
+- This script will grep for case-insentitive "error" lines in the logs of the pods in the given service, by default over the last 5 minutes. If a service is alerting, this is useful to help determine if one pod is acting as an outlier or if all pods are reporting similar error levels and any problem is service-wide.
 
 - Example: `k8s-pod-errors production recommender-api`
 
@@ -110,13 +110,15 @@ Usage: `k8s-pod-errors <env> <pod_names_to_grep>`
     pod = recommender-api-1966416721-yyd5s, error count =        4
     ```
 
+- Example of changing the --since= window: `k8s-pod-errors dev recommender-api 1h`
+
 ---
 
 ### k8s-pod-grep
 
-Usage: `k8s-pod-grep <env> <pod_names_to_grep> <grep_string>`
+Usage: `k8s-pod-grep <env> <pod_names_to_grep> <grep_string> <optional --since= value>`
 
-- This script is similar to `k8s-pod-errors` but instead of doing a hard coded `grep -i error` this script allows the user to input the string param to grep. (But, still hard coded to only look over the last 5 minutes due to the prod debugging focus.) This can be useful to drill into specific errors or other behaviors when there's a concern it may not be consistently happening across all pods for the given service.
+- This script is similar to `k8s-pod-errors` but instead of doing a hard coded `grep -i error` this script allows the user to input the string param to grep. (Again, by default over the last 5 minutes.) This can be useful to drill into specific errors or other behaviors when there's a concern it may not be consistently happening across all pods for the given service.
 
 - Example: `k8s-pod-grep production customer-api "Read timed out"`
     ```
@@ -124,6 +126,8 @@ Usage: `k8s-pod-grep <env> <pod_names_to_grep> <grep_string>`
     pod = customer-api-1966416721-kdc3g, grep count =        4
     pod = customer-api-1966416721-wsjn4, grep count =        5
     ```
+
+- Example of changing the --since= window: `k8s-pod-grep qa customer-api 30m`
 
 ---
 
