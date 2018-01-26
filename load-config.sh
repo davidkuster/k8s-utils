@@ -12,10 +12,11 @@
 
 config_script="${HOME}/.kube/k8s-utils-config.sh"
 
+env=$1
 
 # if params or config isn't right, remind user of required input
 fail() {
-    echo "$1"
+    echo -e "\nERROR: $1\n"
     echo "Usage: $usage"
     if [ -n "$notes" ]; then
         echo "Note:  $notes"
@@ -23,69 +24,25 @@ fail() {
     exit 1
 }
 
+# load "$cfg" & "$namespace" vars from config script
+if [ -f "$config_script" ]; then
+    . "$config_script" "$env"
+else
+    fail "$config_script does not exist, cannot run script"
+fi
+
+# verify env param
+if [ -z $cfg ] || [ -z $namespace ]; then
+    echo "Configured env values are:"
+    grep '==' $config_script | cut -f 3 -d '=' | cut -f 1 -d ']' | sort
+    fail "No configuration found for env: $env"
+fi
+
 # verify sufficient number of args have been passed to the script
 all_args_count=$(echo "$usage" | wc -w)
 if [ "$#" -lt $(($all_args_count - 1)) ]; then
     fail "Not enough arguments"
 fi
-
-
-env=$1
-
-# if custom config script exists, get cfg & namespace from that
-if [ -f "$config_script" ]; then
-    . "$config_script" "$env"
-
-# Sample config load
-# This demonstrates use of 2 k8s clusters - dev & prod - each with 2 custom namespaces.
-# In reality this can be as simple or complicated as your k8s setup requires.
-
-# sample dev cluster - custom namespaces
-elif [[ $env == "dev" ]]; then
-    cfg="config.dev"
-    namespace="dev"
-elif [[ $env == "qa" ]]; then
-    cfg="config.dev"
-    namespace="qa"
-
-# sample dev cluster - default and system namespaces
-elif [[ $env == "dev-default" ]]; then
-    cfg="config.dev"
-    namespace="default"
-elif [[ $env == "dev-sys" ]]; then
-    cfg="config.dev"
-    namespace="kube-system"
-
-# sample prod cluster - custom namespaces
-elif [[ $env == "stage" ]]; then
-    cfg="config.prod"
-    namespace="stage"
-elif [[ $env == "prod" ]]; then
-    cfg="config.prod"
-    namespace="prod"
-
-# sample prod cluster - default and system namespaces
-elif [[ $env == "prod-default" ]]; then
-    cfg="config.prod"
-    namespace="default"
-elif [[ $env == "prod-sys" ]]; then
-    cfg="config.prod"
-    namespace="kube-system"
-fi
-
-
-if [ -z $cfg ] || [ -z $namespace ]; then
-    echo "No configuration found for env: $env"
-    echo "Configured env values are:"
-    if [ -f "$config_script" ]; then
-        grep '==' $config_script | cut -f 3 -d '=' | cut -f 1 -d ']' | sort
-    else
-        # kinda hacky to grep this file, have to explicitly eliminate reporting on this line with the final "grep -v"
-        grep 'if\|elif' "$(dirname "${BASH_SOURCE[0]}")/load-config.sh" | grep '==' | cut -f 3 -d '=' | cut -f 1 -d ']' | sort | grep -v '| cut'
-    fi
-    fail
-fi
-
 
 # set the KUBECONFIG var here to DRY out the various scripts
 export KUBECONFIG=${HOME}/.kube/$cfg

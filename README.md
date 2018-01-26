@@ -12,43 +12,15 @@ Add the cloned copy of this repo directly to your PATH via `.bash_profile`, `.pr
 
 > Note: currently these scripts have only been tested on OSX.
 
-### Create script for your k8s envs
+### Create script to define your k8s envs
 
-The `load-config.sh` script will look for a script at `~/.kube/k8s-utils-config.sh` which details config file and namespace setup specific to your env. An example might be:
+It's necessary to create a script at `~/.kube/k8s-utils-config.sh` which will define the `<env>` param values used below. This will detail the k8s config file(s) and namespaces specific to your k8s environment.
 
-```bash
-env=$1
+A sample script is provided which can be copied to your `~/.kube` dir:
 
-if [[ $env == "dev" ]]; then
-    cfg="config.dev"
-    namespace="dev"
-elif [[ $env == "qa" ]]; then
-    cfg="config.dev"
-    namespace="qa"
-elif [[ $env == "stage" ]]; then
-    cfg="config.prod"
-    namespace="stage"
-elif [[ $env == "production" ]]; then
-    cfg="config.prod"
-    namespace="production"
+    cp EXAMPLE-k8s-utils-config.sh ~/.kube/k8s-utils-config.sh
 
-elif [[ $env == "dev-default" ]]; then
-    cfg="config.dev"
-    namespace="default"
-elif [[ $env == "prod-default" ]]; then
-    cfg="config.prod"
-    namespace="default"
-
-elif [[ $env == "dev-sys" ]]; then
-    cfg="config.dev"
-    namespace="kube-system"
-elif [[ $env == "prod-sys" ]]; then
-    cfg="config.prod"
-    namespace="kube-system"
-fi
-```
-
-Remember that this file needs to be executable - `chmod 755 k8s-utils-config.sh`.
+It will then need to be modified to reflect your config file and namespace setup.
 
 ## Usage
 
