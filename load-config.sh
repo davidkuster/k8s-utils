@@ -21,6 +21,7 @@ fail() {
     if [ -n "$notes" ]; then
         echo "Note:  $notes"
     fi
+    echo ""
     exit 1
 }
 
@@ -34,7 +35,12 @@ fi
 # verify env param
 if [ -z $cfg ] || [ -z $namespace ]; then
     echo "Configured env values are:"
-    grep '==' $config_script | cut -f 3 -d '=' | cut -f 1 -d ']' | sort
+    grep "^[^#;]" $config_script \
+    | grep '==' | \
+    cut -f 3 -d '=' \
+    | cut -f 1 -d ']' \
+    | sed 's/"//g' \
+    | sort
     fail "No configuration found for env: $env"
 fi
 
