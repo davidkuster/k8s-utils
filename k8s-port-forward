@@ -1,0 +1,20 @@
+#!/bin/bash
+
+usage="k8s-port-forward <env> <pod_name_to_grep> <local_port:pod_port>"
+notes="this port-forwards the port mapping from the first pod matching the grep string"
+
+pod_names=$2
+ports=$3
+
+# reads "env" param, loads "namespace" param
+. "$(dirname "${BASH_SOURCE[0]}")/load-config.sh"
+
+first_matching_pod=$(kubectl --namespace=$namespace get pods | grep $pod_names | cut -f 1 -d ' ' | head -n 1)
+
+if [[ -z "$first_matching_pod" ]]; then
+  echo "No pods found in env '$env' with namespace '$namespace' matching '$pod_names'"
+else
+  echo "port-forwarding from pod $first_matching_pod"
+
+  kubectl --namespace=$namespace port-forward $first_matching_pod $ports
+fi
