@@ -204,3 +204,20 @@ Usage: `k8s-describe-nodes <env>`
     ```
 
 ---
+
+### k8s-port-forward
+
+Usage: `k8s-port-forward <env> <pod_name_to_grep> <local_port:pod_port>`
+
+- This script is a minor convenience over using `kubectl port-forward` directly, in that it's not necessary to specify the specific pod to port forward from. Instead it forwards from the first pod matching the given grep string.
+
+- Example: `k8s-port-forward mk web 8080:8080`
+
+- Example result:
+    ```
+    port-forwarding from pod concourse-minikube-web-5b66ffbc6-cjgd7
+    Forwarding from 127.0.0.1:8080 -> 8080
+    Forwarding from [::1]:8080 -> 8080
+    Handling connection for 8080
+    ...
+    ```
