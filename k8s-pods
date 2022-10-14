@@ -1,6 +1,7 @@
 #!/bin/bash
 
 usage="k8s-pods <env> <pod_names_to_grep>"
+notes="watch pods matching the grep string"
 
 pod_names=$2
 

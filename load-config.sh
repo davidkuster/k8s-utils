@@ -21,6 +21,7 @@ fail() {
     if [ -n "$notes" ]; then
         echo "Note:  $notes"
     fi
+    echo "Doc:   https://github.com/davidkuster/k8s-utils#$(basename $0)"
     echo ""
     exit 1
 }
@@ -41,7 +42,7 @@ if [ -z $cfg ] || [ -z $namespace ]; then
     | cut -f 1 -d ']' \
     | sed 's/"//g' \
     | sort
-    fail "No configuration found for env: $env"
+    fail "No configuration found for env: '$env'"
 fi
 
 # verify sufficient number of args have been passed to the script
