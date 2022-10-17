@@ -34,7 +34,7 @@ else
 fi
 
 # verify env param
-if [ -z $cfg ] || [ -z $namespace ]; then
+if [ -z "$cfg" ] || [ -z "$namespace" ]; then
     echo "Configured env values are:"
     grep "^[^#;]" $config_script \
     | grep '==' | \
@@ -53,3 +53,8 @@ fi
 
 # set the KUBECONFIG var here to DRY out the various scripts
 export KUBECONFIG=${HOME}/.kube/$cfg
+
+# if context var is set and different from current context, use that context
+if [ -n "$context" ] && [ "$context" != $(kubectl config current-context) ]; then
+    kubectl config use-context "$context"
+fi
