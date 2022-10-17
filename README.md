@@ -16,11 +16,21 @@ Add the cloned copy of this repo directly to your PATH via `.bash_profile`, `.pr
 
 It's necessary to create a script at `~/.kube/k8s-utils-config.sh` which will define the `<env>` param values used below. This will detail the k8s config file(s) and namespaces specific to your k8s environment.
 
-A sample script is provided which can be copied to your `~/.kube` dir:
+Two sample config scripts are provided.
 
-    cp EXAMPLE-k8s-utils-config.sh ~/.kube/k8s-utils-config.sh
+* One demonstrates using [separate config files](./EXAMPLE-k8s-utils-config_SEPARATE-config-files.sh) per Kubernetes cluster.
+* One demonstrates using a [single config file](./EXAMPLE-k8s-utils-config_SINGLE-config-file.sh) for multiple clusters.
 
-It will then need to be modified to reflect your config file and namespace setup.
+The one which is most relevant can be copied to your `~/.kube` dir:
+
+```bash
+cp EXAMPLE-k8s-utils-config_SEPARATE-config-files.sh ~/.kube/k8s-utils-config.sh
+```
+```bash
+cp EXAMPLE-k8s-utils-config_SINGLE-config-file.sh ~/.kube/k8s-utils-config.sh
+```
+
+It will then need to be modified to reflect your setup. Note these two approaches can be combined if needed.
 
 ## General notes
 
