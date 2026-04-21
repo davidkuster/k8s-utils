@@ -1,11 +1,15 @@
 #!/bin/bash
 
-usage="k8s-pods <env> <pod_names_to_grep>"
-notes="watch pods matching the grep string"
+usage="k8s-pods <env> [pod_names_to_grep]"
+notes="watch pods in the namespace, optionally filtered by a grep string"
 
 pod_names=$2
 
 # reads "env" param, loads "namespace" param
 . "$(dirname "${BASH_SOURCE[0]}")/load-config.sh"
 
-watch "kubectl --namespace=$namespace get pods | grep $pod_names"
+if [ -n "$pod_names" ]; then
+    watch "kubectl --namespace=$namespace get pods | grep $pod_names"
+else
+    watch "kubectl --namespace=$namespace get pods"
+fi

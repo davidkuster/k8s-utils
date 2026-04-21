@@ -46,7 +46,8 @@ if [ -z $cfg ] || [ -z $namespace ]; then
 fi
 
 # verify sufficient number of args have been passed to the script
-all_args_count=$(echo "$usage" | wc -w)
+# count only required params (skip [optional] ones)
+all_args_count=$(echo "$usage" | tr ' ' '\n' | grep -cv '^\[')
 if [ "$#" -lt $(($all_args_count - 1)) ]; then
     fail "Not enough arguments"
 fi

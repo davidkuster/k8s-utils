@@ -50,11 +50,15 @@ Usage: `k8s <env> <cmd>`
 
 ### k8s-pods
 
-Usage: `k8s-pods <env> <pod_names_to_grep>`
+Usage: `k8s-pods <env> [pod_names_to_grep]`
 
 - This script is an alternative to using `kubectl get pods -w`. It uses the `watch` command and is useful to keep an eye on pods when doing a deploy, to see them move between Terminating, Pending, and Running statuses.
 
     - Note that `kubectl rollout status deployment/<deployment name> -w` can also be used to monitor a deploy, but the command is a bit more verbose and doesn't show the same level of detail. For instance, if you have multiple init containers this will let you see that the deploy is running into problems on container 2/4, for example.
+
+- If `pod_names_to_grep` is omitted, all pods in the namespace are watched.
+
+- Example: `k8s-pods stage` (watch all pods in the stage namespace)
 
 - Example: `k8s-pods stage search-api`
 
